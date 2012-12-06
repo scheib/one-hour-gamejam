@@ -16,18 +16,15 @@
 	function draw() {
 		canvas = document.getElementById("canvas");
 		ctx = canvas.getContext("2d");
-
-		ctx.fillStyle = "rgb(200,0,0)";
-		ctx.fillRect (i++, 10, 55, 50);
-
-		ctx.fillStyle = "rgba(0, 0, 200, 0.5)";
-		ctx.fillRect (30, 30, 55, 50);
+		canvas.width = canvas.width;
 
 		ctx.drawImage(img,0,0);
 
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
         
 		ctx.transform(1, 0, 0, 1, 250, 250)
+		ctx.rotate(i);
+		i += 0.01
 		ctx.transform(-1, 0, 0, 1, 0, 0)
 		ctx.transform(1, 0, 0, 1, -250, -250)
 		ctx.rect(250, 0, 500, 500);
