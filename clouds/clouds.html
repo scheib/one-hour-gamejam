@@ -1,0 +1,28 @@
+<html>
+ <head>
+ </head>
+ <body onload="init()">
+   <canvas id="canvas" width="500" height="500"></canvas>
+ </body>
+  <script type="application/javascript">
+  	i = 0;
+
+    function init() {
+		draw();
+	}
+
+	function draw() {
+		canvas = document.getElementById("canvas");
+		ctx = canvas.getContext("2d");
+		canvas.width = canvas.width;
+
+		var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+		gradient.addColorStop("0","cyan");
+		gradient.addColorStop("1","blue");
+		ctx.fillStyle = gradient;
+		ctx.fillRect (0, 0, canvas.width, canvas.height);  
+
+		window.requestAnimationFrame(draw);
+	}
+  </script>
+</html>
