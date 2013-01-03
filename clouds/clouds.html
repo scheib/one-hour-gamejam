@@ -6,9 +6,15 @@
  </body>
   <script type="application/javascript">
   	i = 0;
+	clouds = [];
 
     function init() {
 		draw();
+		createClouds();
+	}
+
+	function createClouds() {
+		clouds.push({ x:.1, y:.1, w:.1, h:.1});
 	}
 
 	function draw() {
@@ -16,12 +22,21 @@
 		ctx = canvas.getContext("2d");
 		canvas.width = canvas.width;
 
+		// sky
 		var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
 		gradient.addColorStop("0","cyan");
 		gradient.addColorStop("1","blue");
 		ctx.fillStyle = gradient;
-		ctx.fillRect (0, 0, canvas.width, canvas.height);  
+		ctx.fillRect(0, 0, canvas.width, canvas.height);  
 
+		// clouds
+		var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+		gradient.addColorStop("0","white");
+		gradient.addColorStop("1","grey");
+		ctx.fillStyle = gradient;
+		clouds.forEach(function(cloud) {
+			ctx.fillRect(canvas.width*cloud.x, canvas.height*cloud.y, canvas.width*(cloud.x+cloud.w), canvas.height*(cloud.y+cloud.h));
+		});
 		window.requestAnimationFrame(draw);
 	}
   </script>
