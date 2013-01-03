@@ -44,6 +44,18 @@
 			ctx.restore();
 		});
 
+		// Glow
+		var gradient = ctx.createLinearGradient(0, 0, 0, 1);
+		gradient.addColorStop("0", "rgba(255, 255, 200, .5)");
+		gradient.addColorStop("1", "rgba(255, 150, 150, .1)");
+		ctx.fillStyle = gradient;
+		clouds.forEach(function(cloud) {
+			ctx.save();
+			ctx.scale(canvas.width, canvas.height);
+			ctx.fillRect(0, 0, 1, 1);
+			ctx.restore();
+		});
+
 		window.requestAnimationFrame(draw);
 	}
   </script>
