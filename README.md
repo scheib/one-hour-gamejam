@@ -12,6 +12,7 @@ Almost finished the transform code to have a rotating mirror of an image. Game p
 - Player then given control of the mirror and reproduce the same image as fast as possible.
 
 2013-01-03 clouds
+-----------------
 
 http://scheib.github.com/one-hour-gamejam/clouds/clouds.html
 
