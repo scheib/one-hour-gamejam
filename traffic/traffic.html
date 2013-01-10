@@ -1,0 +1,33 @@
+<html>
+ <head>
+ </head>
+ <body onload="init()">
+   <canvas id="canvas" width="500" height="500"></canvas>
+ </body>
+  <script type="application/javascript">
+  	i = 0;
+	clouds = [];
+
+    function init() {
+		draw();
+	}
+
+	function draw() {
+		canvas = document.getElementById("canvas");
+		ctx = canvas.getContext("2d");
+		canvas.width = canvas.width;
+
+		// ground
+		var gradient = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 2);
+		gradient.addColorStop("0","greenyellow");
+		gradient.addColorStop("1","black");
+		ctx.fillStyle = gradient;
+		ctx.save();
+		ctx.scale(canvas.width, canvas.height);
+		ctx.fillRect(0, 0, 1, 1);
+		ctx.restore();
+
+		window.requestAnimationFrame(draw);
+	}
+  </script>
+</html>
