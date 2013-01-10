@@ -8,11 +8,21 @@
 	lasttime = 0;
 	cars = [
 		{x: .70, y:.5 , vx: -0.09, vy:  0   },
-		{x: .85, y:.5 , vx: -0.09, vy:  0   },
+		{x: 1.05, y:.5 , vx: -0.09, vy:  0   },
+		{x: 1.28, y:.5 , vx: -0.09, vy:  0   },
+		{x: 1.40, y:.5 , vx: -0.09, vy:  0   },
+		{x: 1.80, y:.5 , vx: -0.09, vy:  0   },
 		{x: .5 , y:.75, vx:  0   , vy: -0.09},
+		{x: .5 , y:.99, vx:  0   , vy: -0.09},
+		{x: .5 , y:1.095, vx:  0   , vy: -0.09},
+		{x: .5 , y:1.375, vx:  0   , vy: -0.09},
+		{x: .5 , y:1.475, vx:  0   , vy: -0.09},
+		{x: .5 , y:1.675, vx:  0   , vy: -0.09},
 	];
 	carsize = 0.05;
 	slowdown = 0.5;
+	carspeed = 0.09;
+	newcarrandomscale = 1;
 	keysdown = {};
 	LEFT = 37;
 	RIGHT = 39;
@@ -47,6 +57,20 @@
 			t = (time - lasttime) / 1000;
 		lasttime = time;
 
+		// new cars
+		if ((Math.random() * newcarrandomscale) < t) {
+			car = {
+				x: 1+carsize,
+				y: 1+carsize,
+				vx: 0,
+				vy: 0,
+			 }
+			 if (Math.random() < 0.5) {
+
+			 }
+		}
+
+		// move cars
 		cars.forEach(function(car) {
 			var vx = car.vx;
 			var vy = car.vy;
@@ -58,6 +82,7 @@
 			car.y += t * vy;
 		});
 
+		// crash cars
 		cars.forEach(function(car1) {
 			cars.forEach(function(car2) {
 				if (car1 == car2)
