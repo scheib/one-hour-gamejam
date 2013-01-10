@@ -12,9 +12,29 @@
 		{x: .5 , y:.75, vx:  0   , vy: -0.09},
 	];
 	carsize = 0.05;
+	slowdown = 0.5;
+	keysdown = {};
+	LEFT = 37;
+	RIGHT = 39;
+	UP = 38;
+	DOWN = 40;
 
     function init() {
 		draw();
+
+		function GetCarOrKeyCode(e)
+		{
+			if ((e.charCode) && (e.keyCode==0))
+				return e.charCode;
+			else
+				return e.keyCode;
+		}
+		document.onkeydown = function (e) {
+			keysdown[GetCarOrKeyCode(e)] = true;
+		}
+		document.onkeyup = function (e) {
+			keysdown[GetCarOrKeyCode(e)] = false;
+		}
 	}
 
 	function draw(time) {
@@ -28,8 +48,14 @@
 		lasttime = time;
 
 		cars.forEach(function(car) {
-			car.x += t * car.vx;
-			car.y += t * car.vy;
+			var vx = car.vx;
+			var vy = car.vy;
+			if (vx > 0 && keysdown[LEFT ]) vx *= slowdown;
+			if (vx < 0 && keysdown[RIGHT]) vx *= slowdown;
+			if (vy > 0 && keysdown[UP   ]) vy *= slowdown;
+			if (vy < 0 && keysdown[DOWN ]) vy *= slowdown;
+			car.x += t * vx;
+			car.y += t * vy;
 		});
 
 		cars.forEach(function(car1) {
