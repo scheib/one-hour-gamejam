@@ -6,7 +6,10 @@
  </body>
   <script type="application/javascript">
 	lasttime = 0;
-	cars = [{x: .5, y:.5, vx: -0.05, vy: 0}];
+	cars = [
+		{x: .75, y:.5 , vx: -0.05, vy:  0   },
+		{x: .5 , y:.75, vx:  0   , vy: -0.05},
+	];
 	carsize = 0.05;
 
     function init() {
@@ -25,6 +28,7 @@
 
 		cars.forEach(function(car) {
 			car.x += t * car.vx;
+			car.y += t * car.vy;
 		});
 
 		// ground
