@@ -6,7 +6,8 @@
  </body>
   <script type="application/javascript">
   	i = 0;
-	clouds = [];
+	cars = [{x: .5, y:.5}];
+	carsize = 0.05;
 
     function init() {
 		draw();
@@ -26,6 +27,21 @@
 		ctx.scale(canvas.width, canvas.height);
 		ctx.fillRect(0, 0, 1, 1);
 		ctx.restore();
+
+		// cars
+		cars.forEach(function(car) {
+			ctx.save();
+			var cargradient = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 2);
+			cargradient.addColorStop("0","blue");
+			cargradient.addColorStop("1","black");
+			ctx.fillStyle = cargradient;
+			ctx.scale(canvas.width, canvas.height);
+			ctx.translate(-carsize/2, -carsize/2);
+			ctx.translate(car.x, car.y);
+			ctx.scale(carsize, carsize);
+			ctx.fillRect(0, 0, 1, 1);
+			ctx.restore();
+		});
 
 		window.requestAnimationFrame(draw);
 	}
