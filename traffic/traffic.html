@@ -7,8 +7,9 @@
   <script type="application/javascript">
 	lasttime = 0;
 	cars = [
-		{x: .75, y:.5 , vx: -0.05, vy:  0   },
-		{x: .5 , y:.75, vx:  0   , vy: -0.05},
+		{x: .70, y:.5 , vx: -0.09, vy:  0   },
+		{x: .85, y:.5 , vx: -0.09, vy:  0   },
+		{x: .5 , y:.75, vx:  0   , vy: -0.09},
 	];
 	carsize = 0.05;
 
@@ -35,7 +36,8 @@
 			cars.forEach(function(car2) {
 				if (car1 == car2)
 					return;
-				if (Math.abs(car1.x - car2.x) < carsize)
+				if (Math.abs(car1.x - car2.x) < carsize &&
+					Math.abs(car1.y - car2.y) < carsize)
 					car1.crashed = true;
 			});
 		});
