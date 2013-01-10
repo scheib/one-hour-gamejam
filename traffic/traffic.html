@@ -31,6 +31,15 @@
 			car.y += t * car.vy;
 		});
 
+		cars.forEach(function(car1) {
+			cars.forEach(function(car2) {
+				if (car1 == car2)
+					return;
+				if (Math.abs(car1.x - car2.x) < carsize)
+					car1.crashed = true;
+			});
+		});
+
 		// ground
 		var gradient = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 2);
 		gradient.addColorStop("0","greenyellow");
@@ -45,7 +54,7 @@
 		cars.forEach(function(car) {
 			ctx.save();
 			var cargradient = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 2);
-			cargradient.addColorStop("0","blue");
+			cargradient.addColorStop("0", car.crashed ? "red" : "blue");
 			cargradient.addColorStop("1","black");
 			ctx.fillStyle = cargradient;
 			ctx.scale(canvas.width, canvas.height);
