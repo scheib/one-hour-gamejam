@@ -27,6 +27,8 @@
 	slowdown = 0.5;
 	carspeed = 0.09;
 	newcarrandomscale = 1;
+	carPlacementSideOfRoadOffset = carsize;
+	carPlacementOffscreenLocationFromCenter = 0.5 + carsize;
 	keysdown = {};
 	LEFT = 37;
 	RIGHT = 39;
@@ -63,15 +65,12 @@
 
 		// new cars
 		if ((Math.random() * newcarrandomscale) < t) {
-			car = {
-				x: 1+carsize,
-				y: 1+carsize,
-				vx: 0,
-				vy: 0,
-			 }
-			 if (Math.random() < 0.5) {
-
-			 }
+			switch (Math.floor(Math.random()*4)) {
+				case 0:  cars.push({x: 0.5 + carPlacementOffscreenLocationFromCenter, y: 0.5, vx: -carspeed, vy: 0}); break;
+				case 1:  cars.push({x: 0.5 - carPlacementOffscreenLocationFromCenter, y: 0.5, vx:  carspeed, vy: 0}); break;
+				case 2:  cars.push({x: 0.5, y: 0.5 + carPlacementOffscreenLocationFromCenter, vx: 0, vy: -carspeed}); break;
+				default: cars.push({x: 0.5, y: 0.5 - carPlacementOffscreenLocationFromCenter, vx: 0, vy:  carspeed}); break;
+			};
 		}
 
 		// move cars
