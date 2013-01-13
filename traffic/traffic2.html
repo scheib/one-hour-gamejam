@@ -6,23 +6,7 @@
  </body>
   <script type="application/javascript">
 	lasttime = 0;
-	cars = [
-		{x: .70, y:.5 , vx: -0.09, vy:  0   },
-		{x: 1.05, y:.5 , vx: -0.09, vy:  0   },
-		{x: 1.28, y:.5 , vx: -0.09, vy:  0   },
-		{x: 1.40, y:.5 , vx: -0.09, vy:  0   },
-		{x: 1.80, y:.5 , vx: -0.09, vy:  0   },
-		{x: 2.03, y:.5 , vx: -0.09, vy:  0   },
-		{x: 2.38, y:.5 , vx: -0.09, vy:  0   },
-		{x: .5 , y:.75, vx:  0   , vy: -0.09},
-		{x: .5 , y:.99, vx:  0   , vy: -0.09},
-		{x: .5 , y:1.095, vx:  0   , vy: -0.09},
-		{x: .5 , y:1.375, vx:  0   , vy: -0.09},
-		{x: .5 , y:1.475, vx:  0   , vy: -0.09},
-		{x: .5 , y:1.675, vx:  0   , vy: -0.09},
-		{x: .5 , y:2.175, vx:  0   , vy: -0.09},
-		{x: .5 , y:2.405, vx:  0   , vy: -0.09},
-	];
+	cars = [];
 	carsize = 0.05;
 	slowdown = 0.5;
 	carspeed = 0.09;
@@ -34,6 +18,15 @@
 	RIGHT = 39;
 	UP = 38;
 	DOWN = 40;
+
+	function addNewCar(sideToPlaceOn) {
+		switch (sideToPlaceOn) {
+			case RIGHT: cars.push({x: 0.5 + carPlacementOffscreenLocationFromCenter, y: 0.5, vx: -carspeed, vy: 0}); break;
+			case LEFT:  cars.push({x: 0.5 - carPlacementOffscreenLocationFromCenter, y: 0.5, vx:  carspeed, vy: 0}); break;
+			case DOWN:  cars.push({x: 0.5, y: 0.5 + carPlacementOffscreenLocationFromCenter, vx: 0, vy: -carspeed}); break;
+			default:    cars.push({x: 0.5, y: 0.5 - carPlacementOffscreenLocationFromCenter, vx: 0, vy:  carspeed}); break;
+		}
+	}
 
     function init() {
 		draw();
@@ -65,12 +58,7 @@
 
 		// new cars
 		if ((Math.random() * newcarrandomscale) < t) {
-			switch (Math.floor(Math.random()*4)) {
-				case 0:  cars.push({x: 0.5 + carPlacementOffscreenLocationFromCenter, y: 0.5, vx: -carspeed, vy: 0}); break;
-				case 1:  cars.push({x: 0.5 - carPlacementOffscreenLocationFromCenter, y: 0.5, vx:  carspeed, vy: 0}); break;
-				case 2:  cars.push({x: 0.5, y: 0.5 + carPlacementOffscreenLocationFromCenter, vx: 0, vy: -carspeed}); break;
-				default: cars.push({x: 0.5, y: 0.5 - carPlacementOffscreenLocationFromCenter, vx: 0, vy:  carspeed}); break;
-			};
+			addNewCar([LEFT, RIGHT, UP, DOWN][Math.floor(Math.random()*4)]);
 		}
 
 		// move cars
