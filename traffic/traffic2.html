@@ -11,8 +11,9 @@
 	slowdown = 0.5;
 	carspeed = 0.09;
 	newcarrandomscale = 1;
-	carPlacementSideOfRoadOffset = carsize;
+	carPlacementSideOfRoadOffset = 0.7 * carsize;
 	carPlacementOffscreenLocationFromCenter = 0.5 + carsize;
+	roadWidth = 2.7 * carsize;
 	keysdown = {};
 	LEFT = 37;
 	RIGHT = 39;
@@ -116,6 +117,17 @@
 		ctx.save();
 		ctx.scale(canvas.width, canvas.height);
 		ctx.fillRect(0, 0, 1, 1);
+		ctx.restore();
+
+		// road
+		var gradient = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 1.5);
+		gradient.addColorStop("0","lightgrey");
+		gradient.addColorStop("1","black");
+		ctx.fillStyle = gradient;
+		ctx.save();
+		ctx.scale(canvas.width, canvas.height);
+		ctx.fillRect(0.5 - roadWidth/2, 0, roadWidth, 1);
+		ctx.fillRect(0, 0.5 - roadWidth/2, 1, roadWidth);
 		ctx.restore();
 
 		// cars
