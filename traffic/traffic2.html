@@ -1,0 +1,129 @@
+<html>
+ <head>
+ </head>
+ <body onload="init()">
+   <canvas id="canvas" width="500" height="500"></canvas>
+ </body>
+  <script type="application/javascript">
+	lasttime = 0;
+	cars = [
+		{x: .70, y:.5 , vx: -0.09, vy:  0   },
+		{x: 1.05, y:.5 , vx: -0.09, vy:  0   },
+		{x: 1.28, y:.5 , vx: -0.09, vy:  0   },
+		{x: 1.40, y:.5 , vx: -0.09, vy:  0   },
+		{x: 1.80, y:.5 , vx: -0.09, vy:  0   },
+		{x: 2.03, y:.5 , vx: -0.09, vy:  0   },
+		{x: 2.38, y:.5 , vx: -0.09, vy:  0   },
+		{x: .5 , y:.75, vx:  0   , vy: -0.09},
+		{x: .5 , y:.99, vx:  0   , vy: -0.09},
+		{x: .5 , y:1.095, vx:  0   , vy: -0.09},
+		{x: .5 , y:1.375, vx:  0   , vy: -0.09},
+		{x: .5 , y:1.475, vx:  0   , vy: -0.09},
+		{x: .5 , y:1.675, vx:  0   , vy: -0.09},
+		{x: .5 , y:2.175, vx:  0   , vy: -0.09},
+		{x: .5 , y:2.405, vx:  0   , vy: -0.09},
+	];
+	carsize = 0.05;
+	slowdown = 0.5;
+	carspeed = 0.09;
+	newcarrandomscale = 1;
+	keysdown = {};
+	LEFT = 37;
+	RIGHT = 39;
+	UP = 38;
+	DOWN = 40;
+
+    function init() {
+		draw();
+
+		function GetCarOrKeyCode(e)
+		{
+			if ((e.charCode) && (e.keyCode==0))
+				return e.charCode;
+			else
+				return e.keyCode;
+		}
+		document.onkeydown = function (e) {
+			keysdown[GetCarOrKeyCode(e)] = true;
+		}
+		document.onkeyup = function (e) {
+			keysdown[GetCarOrKeyCode(e)] = false;
+		}
+	}
+
+	function draw(time) {
+		canvas = document.getElementById("canvas");
+		ctx = canvas.getContext("2d");
+		canvas.width = canvas.width;
+
+		var t = 0;
+		if (lasttime > 0)
+			t = (time - lasttime) / 1000;
+		lasttime = time;
+
+		// new cars
+		if ((Math.random() * newcarrandomscale) < t) {
+			car = {
+				x: 1+carsize,
+				y: 1+carsize,
+				vx: 0,
+				vy: 0,
+			 }
+			 if (Math.random() < 0.5) {
+
+			 }
+		}
+
+		// move cars
+		cars.forEach(function(car) {
+			var vx = car.vx;
+			var vy = car.vy;
+			if (vx > 0 && keysdown[LEFT ]) vx *= slowdown;
+			if (vx < 0 && keysdown[RIGHT]) vx *= slowdown;
+			if (vy > 0 && keysdown[UP   ]) vy *= slowdown;
+			if (vy < 0 && keysdown[DOWN ]) vy *= slowdown;
+			car.x += t * vx;
+			car.y += t * vy;
+		});
+
+		// crash cars
+		cars.forEach(function(car1) {
+			cars.forEach(function(car2) {
+				if (car1 == car2)
+					return;
+				if (Math.abs(car1.x - car2.x) < carsize &&
+					Math.abs(car1.y - car2.y) < carsize)
+					car1.crashed = true;
+			});
+		});
+
+		// ground
+		var gradient = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 2);
+		gradient.addColorStop("0","greenyellow");
+		gradient.addColorStop("1","black");
+		ctx.fillStyle = gradient;
+		ctx.save();
+		ctx.scale(canvas.width, canvas.height);
+		ctx.fillRect(0, 0, 1, 1);
+		ctx.restore();
+
+		// cars
+		cars.forEach(function(car) {
+			ctx.save();
+			var cargradient = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 2);
+			cargradient.addColorStop("0", car.crashed ? "red" : "blue");
+			cargradient.addColorStop("1","black");
+			ctx.fillStyle = cargradient;
+			ctx.scale(canvas.width, canvas.height);
+			ctx.translate(-carsize/2, -carsize/2);
+			ctx.translate(car.x, car.y);
+			ctx.scale(carsize, carsize);
+			ctx.fillRect(0, 0, 1, 1);
+			ctx.restore();
+		});
+
+		window.requestAnimationFrame(draw);
+	}
+  </script>
+  <p>Press arrow keys to slow down cars coming from different directions. Try to have the cars not crash.</p>
+</html>
