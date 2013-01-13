@@ -21,10 +21,34 @@
 
 	function addNewCar(sideToPlaceOn) {
 		switch (sideToPlaceOn) {
-			case RIGHT: cars.push({x: 0.5 + carPlacementOffscreenLocationFromCenter, y: 0.5, vx: -carspeed, vy: 0}); break;
-			case LEFT:  cars.push({x: 0.5 - carPlacementOffscreenLocationFromCenter, y: 0.5, vx:  carspeed, vy: 0}); break;
-			case DOWN:  cars.push({x: 0.5, y: 0.5 + carPlacementOffscreenLocationFromCenter, vx: 0, vy: -carspeed}); break;
-			default:    cars.push({x: 0.5, y: 0.5 - carPlacementOffscreenLocationFromCenter, vx: 0, vy:  carspeed}); break;
+			case RIGHT:
+			cars.push({
+				x: 0.5 + carPlacementOffscreenLocationFromCenter,
+				y: 0.5 - carPlacementSideOfRoadOffset,
+				vx: -carspeed,
+				vy: 0});
+			break;
+			case LEFT:
+			cars.push({
+				x: 0.5 - carPlacementOffscreenLocationFromCenter,
+				y: 0.5 + carPlacementSideOfRoadOffset,
+				vx: carspeed,
+				vy: 0});
+				break;
+			case DOWN:
+			cars.push({
+				x: 0.5 + carPlacementSideOfRoadOffset,
+				y: 0.5 + carPlacementOffscreenLocationFromCenter,
+				vx: 0,
+				vy: -carspeed});
+			break;
+			default:
+			cars.push({
+				x: 0.5 - carPlacementSideOfRoadOffset,
+				y: 0.5 - carPlacementOffscreenLocationFromCenter,
+				vx: 0,
+				vy: carspeed});
+			break;
 		}
 	}
 
