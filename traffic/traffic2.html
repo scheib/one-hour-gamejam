@@ -12,6 +12,7 @@
 	slowdown = 0.5;
 	carspeed = 0.09;
 	newcarrandomscale = 2;
+	removeTimeOut = 2;
 	carPlacementSideOfRoadOffset = 0.7 * carsize;
 	carPlacementOffscreenLocationFromCenter = 0.5 + carsize;
 	roadWidth = 2.7 * carsize;
@@ -90,34 +91,46 @@
 		// move cars, and drop them out if they've passed by.
 		carsAlive = [];
 		cars.forEach(function(car) {
-			var vx = car.vx;
-			var vy = car.vy;
-			if (vx > 0 && keysdown[LEFT ]) vx *= slowdown;
-			if (vx < 0 && keysdown[RIGHT]) vx *= slowdown;
-			if (vy > 0 && keysdown[UP   ]) vy *= slowdown;
-			if (vy < 0 && keysdown[DOWN ]) vy *= slowdown;
-			car.x += t * vx;
-			car.y += t * vy;
+			if (!car.crashed) {
+				var vx = car.vx;
+				var vy = car.vy;
+				if (vx > 0 && keysdown[LEFT ]) vx *= slowdown;
+				if (vx < 0 && keysdown[RIGHT]) vx *= slowdown;
+				if (vy > 0 && keysdown[UP   ]) vy *= slowdown;
+				if (vy < 0 && keysdown[DOWN ]) vy *= slowdown;
+				car.x += t * vx;
+				car.y += t * vy;
+			}
+
+			// Crashed cars stick around for a while
+			if (car.removeTimer)
+				car.removeTimer -= t;
 
 			// clean up cars, copy just the ones not yet passed
-			if ((car.vx > 0 && car.x < (0.5 + carPlacementOffscreenLocationFromCenter))
-			||  (car.vx < 0 && car.x > (0.5 - carPlacementOffscreenLocationFromCenter))
-			||  (car.vy > 0 && car.y < (0.5 + carPlacementOffscreenLocationFromCenter))
-			||  (car.vy < 0 && car.y > (0.5 - carPlacementOffscreenLocationFromCenter)))
-				carsAlive.push(car);
-				else
-					console.log("punt", car);
+			if (
+				(  (car.vx > 0 && car.x < (0.5 + carPlacementOffscreenLocationFromCenter))
+				|| (car.vx < 0 && car.x > (0.5 - carPlacementOffscreenLocationFromCenter))
+				|| (car.vy > 0 && car.y < (0.5 + carPlacementOffscreenLocationFromCenter))
+				|| (car.vy < 0 && car.y > (0.5 - carPlacementOffscreenLocationFromCenter))
+				)
+				&&
+				(!car.removeTimer || car.removeTimer > 0))
+					carsAlive.push(car);
 		});
 		cars = carsAlive;
 
 		// crash cars
 		cars.forEach(function(car1) {
+			if (car1.crashed)
+				return;
 			cars.forEach(function(car2) {
 				if (car1 == car2)
 					return;
 				if (Math.abs(car1.x - car2.x) < carsize &&
-					Math.abs(car1.y - car2.y) < carsize)
+					Math.abs(car1.y - car2.y) < carsize) {
 					car1.crashed = true;
+					car1.removeTimer = removeTimeOut;
+				}
 			});
 		});
 
