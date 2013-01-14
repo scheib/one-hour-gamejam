@@ -23,36 +23,56 @@
 	DOWN = 40;
 
 	function addNewCar(sideToPlaceOn) {
+		var newcar = undefined;
 		switch (sideToPlaceOn) {
 			case RIGHT:
-			cars.push({
+			newcar = {
 				x: 0.5 + carPlacementOffscreenLocationFromCenter,
 				y: 0.5 - carPlacementSideOfRoadOffset,
 				vx: -carspeed,
-				vy: 0});
+				vy: 0};
 			break;
 			case LEFT:
-			cars.push({
+			newcar = {
 				x: 0.5 - carPlacementOffscreenLocationFromCenter,
 				y: 0.5 + carPlacementSideOfRoadOffset,
 				vx: carspeed,
-				vy: 0});
+				vy: 0};
 				break;
 			case DOWN:
-			cars.push({
+			newcar = {
 				x: 0.5 + carPlacementSideOfRoadOffset,
 				y: 0.5 + carPlacementOffscreenLocationFromCenter,
 				vx: 0,
-				vy: -carspeed});
+				vy: -carspeed};
 			break;
 			default:
-			cars.push({
+			newcar = {
 				x: 0.5 - carPlacementSideOfRoadOffset,
 				y: 0.5 - carPlacementOffscreenLocationFromCenter,
 				vx: 0,
-				vy: carspeed});
+				vy: carspeed};
 			break;
 		}
+		if (!carCollidesWithAnyOther(newcar)) {
+			cars.push(newcar);
+			return true;
+		}
+		return false;
+	}
+
+	function carCollidesWithAnyOther(car1) {
+		var result = false;
+		cars.forEach(function(car2) {
+			if (car1 == car2)
+				return;
+			if (Math.abs(car1.x - car2.x) < carsize &&
+				Math.abs(car1.y - car2.y) < carsize) {
+				result = true;
+				return;
+			}
+		});
+		return result;
 	}
 
     function init() {
@@ -85,7 +105,11 @@
 
 		// new cars
 		if ((Math.random() * newcarrandomscale) < t) {
-			addNewCar([LEFT, RIGHT, UP, DOWN][Math.floor(Math.random()*4)]);
+			var randomSide = Math.floor(Math.random()*4);
+			for (attempt = 0; attempt < 4; attempt++) {
+				if (addNewCar([LEFT, RIGHT, UP, DOWN][(randomSide + attempt) % 4]))
+					break;
+			}
 		}
 
 		// move cars, and drop them out if they've passed by.
@@ -123,15 +147,10 @@
 		cars.forEach(function(car1) {
 			if (car1.crashed)
 				return;
-			cars.forEach(function(car2) {
-				if (car1 == car2)
-					return;
-				if (Math.abs(car1.x - car2.x) < carsize &&
-					Math.abs(car1.y - car2.y) < carsize) {
-					car1.crashed = true;
-					car1.removeTimer = removeTimeOut;
-				}
-			});
+			if (carCollidesWithAnyOther(car1)) {
+				car1.crashed = true;
+				car1.removeTimer = removeTimeOut;
+			}
 		});
 
 		// ground
