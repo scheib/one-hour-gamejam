@@ -7,6 +7,7 @@
   <script type="application/javascript">
 	lasttime = 0;
 	cars = [];
+	carsAlive = [];
 	carsize = 0.05;
 	slowdown = 0.5;
 	carspeed = 0.09;
@@ -86,7 +87,8 @@
 			addNewCar([LEFT, RIGHT, UP, DOWN][Math.floor(Math.random()*4)]);
 		}
 
-		// move cars
+		// move cars, and drop them out if they've passed by.
+		carsAlive = [];
 		cars.forEach(function(car) {
 			var vx = car.vx;
 			var vy = car.vy;
@@ -96,7 +98,17 @@
 			if (vy < 0 && keysdown[DOWN ]) vy *= slowdown;
 			car.x += t * vx;
 			car.y += t * vy;
+
+			// clean up cars, copy just the ones not yet passed
+			if ((car.vx > 0 && car.x < (0.5 + carPlacementOffscreenLocationFromCenter))
+			||  (car.vx < 0 && car.x > (0.5 - carPlacementOffscreenLocationFromCenter))
+			||  (car.vy > 0 && car.y < (0.5 + carPlacementOffscreenLocationFromCenter))
+			||  (car.vy < 0 && car.y > (0.5 - carPlacementOffscreenLocationFromCenter)))
+				carsAlive.push(car);
+				else
+					console.log("punt", car);
 		});
+		cars = carsAlive;
 
 		// crash cars
 		cars.forEach(function(car1) {
