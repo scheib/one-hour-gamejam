@@ -11,7 +11,8 @@
 	carsize = 0.05;
 	slowdown = 0.5;
 	carspeed = 0.09;
-	newcarrandomscale = 2;
+	newcarrandomscaleEasy = 2;
+	newcarrandomscaleHard = .5;
 	removeTimeOut = 2;
 	carPlacementSideOfRoadOffset = 0.7 * carsize;
 	carPlacementOffscreenLocationFromCenter = 0.5 + carsize;
@@ -104,7 +105,10 @@
 		lasttime = time;
 
 		// new cars
-		if ((Math.random() * newcarrandomscale) < t) {
+		var difficultySlider=document.getElementById("difficultySlider");
+		var randomScale = newcarrandomscaleEasy +
+			difficultySlider.value/difficultySlider.max * (newcarrandomscaleHard - newcarrandomscaleEasy);
+		if ((Math.random() * randomScale) < t) {
 			var randomSide = Math.floor(Math.random()*4);
 			for (attempt = 0; attempt < 4; attempt++) {
 				if (addNewCar([LEFT, RIGHT, UP, DOWN][(randomSide + attempt) % 4]))
@@ -193,5 +197,6 @@
 	}
   </script>
   <p>Press arrow keys to slow down cars coming from different directions. Try to have the cars not crash.</p>
+  <p>Difficulty <input id="difficultySlider" type ="range" min ="0" max="100" value ="0"/>
   <p><a href="traffic.html">Original game</a> completed within the one hour game jam.</p>
 </html>
