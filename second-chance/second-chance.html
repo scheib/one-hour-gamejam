@@ -11,9 +11,11 @@
 	offset = -.1;
 	player = {
 		x: 0.5,
-		w: .1,
-		h: .2,
-		moveSpeed: 1
+		w: .05,
+		h: .1,
+		moveSpeed: .1,
+		belief: 0.5,
+		inSun: true,
 	}
 	keysdown = {};
 	LEFT = 37;
@@ -42,7 +44,7 @@
 
 	function createClouds() {
 		clouds.push({ x:.1, y:.1, w:.3, h:.1, vx:-.1});
-		clouds.push({ x:.5, y:.2, w:.3, h:.1, vx:.2});
+		clouds.push({ x:.5, y:.2, w:.3, h:.1, vx:0});
 	}
 
 	function draw(time) {
@@ -90,8 +92,11 @@
 
 		// Player
 		var gradient = ctx.createLinearGradient(0, 0, 0, 1);
-		gradient.addColorStop("0","red");
-		gradient.addColorStop("1","red");
+		if (player.inSun)
+			gradient.addColorStop("0","yellow");
+		else
+			gradient.addColorStop("0","grey");
+		gradient.addColorStop("1","orange");
 		ctx.fillStyle = gradient;
 		ctx.save();
 		ctx.scale(canvas.width, canvas.height);
@@ -101,6 +106,7 @@
 		ctx.restore();
 
 		// Shadows
+		player.inSun = true;
 		ctx.save();
 		var gradient = ctx.createLinearGradient(0, 0, 0, 1);
 		gradient.addColorStop("0", "rgba(0, 0, 0, .5)");
@@ -108,11 +114,15 @@
 		ctx.fillStyle = gradient;
 		ctx.scale(canvas.width, canvas.height);
 		clouds.forEach(function(cloud) {
+			groundShadowRight = scale*(cloud.x+cloud.w)+offset;
+			groundShadowLeft = scale*(cloud.x)+offset;
+			if (player.x > groundShadowLeft && player.x < groundShadowRight)
+				player.inSun = false;
 			ctx.beginPath();
 			ctx.moveTo(cloud.x, cloud.y+cloud.h);
 			ctx.lineTo(cloud.x+cloud.w, cloud.y+cloud.h);
-			ctx.lineTo(scale*(cloud.x+cloud.w)+offset, 1);
-			ctx.lineTo(scale*(cloud.x)+offset, 1);
+			ctx.lineTo(groundShadowRight, 1);
+			ctx.lineTo(groundShadowLeft, 1);
 			ctx.closePath();
 			ctx.fill();			
 		});
