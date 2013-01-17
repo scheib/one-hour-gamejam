@@ -9,6 +9,11 @@
 	clouds = [];
 	scale = 1.3;
 	offset = -.1;
+	player = {
+		x: 0.5,
+		w: .1,
+		h: .2,
+	}
 
     function init() {
 		draw();
@@ -46,7 +51,19 @@
 			ctx.restore();
 		});
 
-		// Glow
+		// Player
+		var gradient = ctx.createLinearGradient(0, 0, 0, 1);
+		gradient.addColorStop("0","red");
+		gradient.addColorStop("1","red");
+		ctx.fillStyle = gradient;
+		ctx.save();
+		ctx.scale(canvas.width, canvas.height);
+		ctx.translate(player.x - player.w/2, 1-player.h);
+		ctx.scale(player.w, player.h);
+		ctx.fillRect(0, 0, 1, 1);
+		ctx.restore();
+
+		// Shadows
 		ctx.save();
 		var gradient = ctx.createLinearGradient(0, 0, 0, 1);
 		gradient.addColorStop("0", "rgba(0, 0, 0, .5)");
