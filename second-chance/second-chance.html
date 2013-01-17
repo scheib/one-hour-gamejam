@@ -41,8 +41,8 @@
 	}
 
 	function createClouds() {
-		clouds.push({ x:.1, y:.1, w:.3, h:.1});
-		clouds.push({ x:.5, y:.2, w:.3, h:.1});
+		clouds.push({ x:.1, y:.1, w:.3, h:.1, vx:-.1});
+		clouds.push({ x:.5, y:.2, w:.3, h:.1, vx:.2});
 	}
 
 	function draw(time) {
@@ -55,13 +55,18 @@
 		ctx = canvas.getContext("2d");
 		canvas.width = canvas.width;
 
+		// move clouds
+		clouds.forEach(function(cloud) {
+			cloud.x += cloud.vx * t;
+		});
+
 		// move player
 		if (keysdown[LEFT ])
 			player.x -= player.moveSpeed * t;
 		if (keysdown[RIGHT])
 			player.x += player.moveSpeed * t;
 		player.x = Math.max(0, Math.min(1, player.x));
-		
+
 		// sky
 		var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
 		gradient.addColorStop("0","cyan");
