@@ -60,7 +60,8 @@
 			player.x -= player.moveSpeed * t;
 		if (keysdown[RIGHT])
 			player.x += player.moveSpeed * t;
-
+		player.x = Math.max(0, Math.min(1, player.x));
+		
 		// sky
 		var gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
 		gradient.addColorStop("0","cyan");
