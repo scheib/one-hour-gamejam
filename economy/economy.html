@@ -1,0 +1,56 @@
+<html>
+ <head>
+ </head>
+ <body onload="init()">
+ 	<p>Incomplete. A game where you model the progress of an economy by making decisions over time... only got so far as the UI to create initial conditions setup.</p>
+	<p>State:</p>
+	<p>
+		time: <div id=time></div>people: <div id=people></div>
+	</p>
+	<button onclick="compute(); displayLastState();">compute</button>
+	<button onclick="resetWorld(); displayLastState();">resetWorld</button>
+	<p>Initial Conditions:</p>
+	<table width=100%>
+		<tr><td>initNumPeople </td><td width=100%><input id="initNumPeople" style="width:100%" type ="range" min ="0" max="1000" value ="10"/></td></tr>
+		<tr><td>initMinWealth </td><td width=100%><input id="initMinWealth" style="width:100%" type ="range" min ="0" max="1000" value ="10"/></td></tr>
+		<tr><td>initMaxWealth </td><td width=100%><input id="initMaxWealth" style="width:100%" type ="range" min ="0" max="1000" value ="10"/></td></tr>
+	</table>
+ </body>
+ <script type="application/javascript">
+	function $(id) { return document.getElementById(id); }
+	function slider(id) { return $(id).value; }
+
+    function init() {
+    	resetWorld();
+    	displayLastState();
+	}
+
+    function resetWorld() {
+		states = [];
+		states.push({});
+		states[0].time = 0;
+		states[0].people = [];
+    	for (i=0; i<slider("initNumPeople"); i++) {
+    		states[0].people.push({});
+    	}
+	}
+
+    function displayLastState() {
+    	displayState(states[states.length-1]);
+	}
+
+    function displayState(state) {
+    	$("time").innerText = state.time;
+    	$("people").innerText = state.people.length;
+	}
+
+    function compute() {
+    	var laststate = states[states.length-1];
+    	// make a copy
+    	var newstate = JSON.parse(JSON.stringify(laststate));
+    	states.push(newstate);
+    	newstate.time += 1;
+	}
+
+  </script>
+</html>
