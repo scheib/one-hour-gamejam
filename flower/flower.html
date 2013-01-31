@@ -110,12 +110,23 @@
 			ctx.translate(gridx, gridy);
 
 			// a flower
-			ctx.translate(.5, .5);
-			ctx.scale(0.5, 0.5);
-			ctx.rotate(turn.flowerSeeds[i] * 2 * Math.PI / 4);
-			ctx.translate(-.5, -.5);
+			{			
+				ctx.save();
+				ctx.translate(.5, .5);
+				ctx.scale(0.5, 0.5);
+				ctx.rotate(turn.flowerSeeds[i] * 2 * Math.PI / 4);
+				ctx.translate(-.5, -.5);
+				ctx.fillRect(0, 0, 1, 1);
+				ctx.restore();
 
-			ctx.fillRect(0, 0, 1, 1);
+				ctx.save();
+				ctx.translate(.5, .5);
+				ctx.scale(0.3, 0.3);
+				ctx.rotate(1000*turn.flowerSeeds[i] * 2 * Math.PI / 4);
+				ctx.translate(-.5, -.5);
+				ctx.fillRect(0, 0, 1, 1);
+				ctx.restore();
+			}
 			ctx.restore();
 		}
 		window.requestAnimationFrame(draw);
