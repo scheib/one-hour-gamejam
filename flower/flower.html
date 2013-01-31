@@ -4,6 +4,7 @@
  <body onload="init()">
    <p>Flowers.</p>
    <canvas id="canvas" width="500" height="500"></canvas>
+   <p>Right <span id="right"></span>, Wrong <span id="wrong"></span></p>
  </body>
   <script type="application/javascript">
 	var lasttime = 0;
@@ -11,6 +12,8 @@
     var ctx;
     var turn = {};
     var gridSize = 3; // side of a grid
+    var right = 0;
+    var wrong = 0;
 
     function init() {
 		canvas = document.getElementById("canvas");
@@ -21,7 +24,13 @@
 		draw();
 	}
 
+	function updateScore() {
+		document.getElementById("right").innerText = right;
+		document.getElementById("wrong").innerText = wrong;
+	}
+
 	function setupTurn() {
+		updateScore();
 		turn = {};
 		turn.winLocation = Math.floor(Math.random()*gridSize*gridSize);
 		console.log("turn", turn);
@@ -31,13 +40,23 @@
 		return Math.min(Math.max(x, min), max);
 	}
 
+	function itemNumberFromGridLocation(x, y) {
+		return x + y * gridSize; 
+	}
+
 	function click(e) {
 		var x = e.offsetX / canvas.width;
 		var y = e.offsetY / canvas.width;
 
 		var xgrid = clamp(Math.floor(x*gridSize), 0, gridSize);
 		var ygrid = clamp(Math.floor(y*gridSize), 0, gridSize);
-		console.log(x, y, xgrid, ygrid);
+		console.log("click to ", x, y, xgrid, ygrid, itemNumberFromGridLocation);
+
+		if (itemNumberFromGridLocation(xgrid, ygrid) == turn.winLocation)
+			right++;
+		else
+			wrong++;
+
 		setupTurn();
 	}
 
