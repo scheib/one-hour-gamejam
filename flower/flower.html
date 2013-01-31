@@ -6,23 +6,39 @@
    <canvas id="canvas" width="500" height="500"></canvas>
  </body>
   <script type="application/javascript">
-	lasttime = 0;
+	var lasttime = 0;
     var canvas;
     var ctx;
+    var turn = {};
+    var gridSize = 3; // side of a grid
 
     function init() {
 		canvas = document.getElementById("canvas");
 		ctx = canvas.getContext("2d");
 
 		canvas.onclick = click;
+		setupTurn();
 		draw();
+	}
+
+	function setupTurn() {
+		turn = {};
+		turn.winLocation = Math.floor(Math.random()*gridSize*gridSize);
+		console.log("turn", turn);
+	}
+
+	function clamp(x, min, max) {
+		return Math.min(Math.max(x, min), max);
 	}
 
 	function click(e) {
 		var x = e.offsetX / canvas.width;
 		var y = e.offsetY / canvas.width;
 
-		console.log(x, y);
+		var xgrid = clamp(Math.floor(x*gridSize), 0, gridSize);
+		var ygrid = clamp(Math.floor(y*gridSize), 0, gridSize);
+		console.log(x, y, xgrid, ygrid);
+		setupTurn();
 	}
 
 	function draw(time) {
