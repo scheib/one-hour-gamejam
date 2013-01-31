@@ -7,14 +7,25 @@
  </body>
   <script type="application/javascript">
 	lasttime = 0;
+    var canvas;
+    var ctx;
 
     function init() {
+		canvas = document.getElementById("canvas");
+		ctx = canvas.getContext("2d");
+
+		canvas.onclick = click;
 		draw();
 	}
 
+	function click(e) {
+		var x = e.offsetX / canvas.width;
+		var y = e.offsetY / canvas.width;
+
+		console.log(x, y);
+	}
+
 	function draw(time) {
-		canvas = document.getElementById("canvas");
-		ctx = canvas.getContext("2d");
 		canvas.width = canvas.width;
 
 		var t = 0;
