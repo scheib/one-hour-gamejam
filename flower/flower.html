@@ -90,6 +90,31 @@
 		ctx.fillRect(0, 0, 1, 1);
 		ctx.restore();
 
+		// flowers
+		var gradient = ctx.createRadialGradient(0.5, 0.5, 0, 0.5, 0.5, 2);
+		gradient.addColorStop("0","red");
+		gradient.addColorStop("1","black");
+		ctx.fillStyle = gradient;
+		for (i=0; i<gridSize*gridSize; i++) {
+			ctx.save();
+			// fit on canvas
+			ctx.scale(canvas.width, canvas.height);
+
+			// fit to a grid space
+			ctx.scale(1/gridSize, 1/gridSize);
+			var gridx = i % gridSize;
+			var gridy = Math.floor(i/gridSize);
+			ctx.translate(gridx, gridy);
+
+			// a flower
+			ctx.translate(.5, .5);
+			ctx.scale(0.5, 0.5);
+			ctx.rotate(turn.flowerSeeds[i] * 2 * Math.PI);
+			ctx.translate(-.5, -.5);
+
+			ctx.fillRect(0, 0, 1, 1);
+			ctx.restore();
+		}
 		window.requestAnimationFrame(draw);
 	}
   </script>
