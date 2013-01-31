@@ -11,7 +11,7 @@
     var canvas;
     var ctx;
     var turn = {};
-    var gridSize = 3; // side of a grid
+    var gridSize = 1; // side of a grid
     var right = 0;
     var wrong = 0;
 
@@ -31,6 +31,9 @@
 
 	function setupTurn() {
 		updateScore();
+
+		// update gridSize based on right
+		gridSize = Math.floor(2 + right / 2);
 		turn = {};
 		turn.winLocation1 = Math.floor(Math.random()*gridSize*gridSize);
 		turn.winLocation2 = turn.winLocation1;
@@ -109,7 +112,7 @@
 			// a flower
 			ctx.translate(.5, .5);
 			ctx.scale(0.5, 0.5);
-			ctx.rotate(turn.flowerSeeds[i] * 2 * Math.PI);
+			ctx.rotate(turn.flowerSeeds[i] * 2 * Math.PI / 4);
 			ctx.translate(-.5, -.5);
 
 			ctx.fillRect(0, 0, 1, 1);
