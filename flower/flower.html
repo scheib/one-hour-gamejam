@@ -32,7 +32,17 @@
 	function setupTurn() {
 		updateScore();
 		turn = {};
-		turn.winLocation = Math.floor(Math.random()*gridSize*gridSize);
+		turn.winLocation1 = Math.floor(Math.random()*gridSize*gridSize);
+		turn.winLocation2 = turn.winLocation1;
+		while (turn.winLocation2 == turn.winLocation1) {
+			turn.winLocation2 = Math.floor(Math.random()*gridSize*gridSize);
+		}
+
+		turn.flowerSeeds = [];
+		for (i=0; i<gridSize*gridSize; i++)
+			turn.flowerSeeds[i] = Math.random();
+		turn.flowerSeeds[turn.winLocation1] = turn.flowerSeeds[turn.winLocation2];
+
 		console.log("turn", turn);
 	}
 
@@ -52,7 +62,8 @@
 		var ygrid = clamp(Math.floor(y*gridSize), 0, gridSize);
 		console.log("click to ", x, y, xgrid, ygrid, itemNumberFromGridLocation);
 
-		if (itemNumberFromGridLocation(xgrid, ygrid) == turn.winLocation)
+		if (itemNumberFromGridLocation(xgrid, ygrid) == turn.winLocation1 ||
+			itemNumberFromGridLocation(xgrid, ygrid) == turn.winLocation2)
 			right++;
 		else
 			wrong++;
