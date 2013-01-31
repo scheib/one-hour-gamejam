@@ -111,21 +111,17 @@
 
 			// a flower
 			{			
-				ctx.save();
-				ctx.translate(.5, .5);
-				ctx.scale(0.5, 0.5);
-				ctx.rotate(turn.flowerSeeds[i] * 2 * Math.PI / 4);
-				ctx.translate(-.5, -.5);
-				ctx.fillRect(0, 0, 1, 1);
-				ctx.restore();
-
-				ctx.save();
-				ctx.translate(.5, .5);
-				ctx.scale(0.3, 0.3);
-				ctx.rotate(1000*turn.flowerSeeds[i] * 2 * Math.PI / 4);
-				ctx.translate(-.5, -.5);
-				ctx.fillRect(0, 0, 1, 1);
-				ctx.restore();
+				for (petal=0; petal<10; petal++) {				
+					ctx.save();
+					ctx.translate(.5, .5);
+					var size = 0.5 - petal * 0.05;
+					ctx.scale(size, size);
+					var rotateMul = Math.pow(12, petal);
+					ctx.rotate(rotateMul * turn.flowerSeeds[i] * 2 * Math.PI / 4);
+					ctx.translate(-.5, -.5);
+					ctx.fillRect(0, 0, 1, 1);
+					ctx.restore();
+				}
 			}
 			ctx.restore();
 		}
